@@ -1,0 +1,795 @@
+<!-- BAMMAZ v3.4 MOBILE POLISH VERIFIED FILE -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>BAMMAZ N THE HOOD - Mobile v3.4 MOBILE POLISH</title>
+<style>
+:root{
+  --bg:#080808;--panel:#151515;--panel2:#1d1d1d;--gold:#d9aa1f;--gold2:#f0cf69;
+  --text:#f5f5f5;--muted:#a9a9a9;--border:#3a321c;
+}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;padding-bottom:112px}
+button,select,input{font:inherit}
+button{border:0;border-radius:10px;padding:12px 14px;background:var(--gold);color:#111;font-weight:900;min-height:44px}
+button.secondary{background:#333;color:#fff} button:disabled{opacity:.38}
+header{position:sticky;top:0;z-index:40;background:#0d0d0df2;border-bottom:1px solid var(--border);padding:10px 12px}
+.titleRow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+h1{margin:0;font-size:18px;line-height:1.05}.gold{color:var(--gold)}
+.diceTop{display:flex;gap:5px}
+.die{width:38px;height:38px;border-radius:9px;background:#f5f5f5;color:#111;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:5px;gap:1px}
+.pip{width:6px;height:6px;border-radius:50%;background:#111;align-self:center;justify-self:center}
+.p1{grid-column:1;grid-row:1}.p2{grid-column:3;grid-row:1}.p3{grid-column:1;grid-row:2}.p4{grid-column:2;grid-row:2}.p5{grid-column:3;grid-row:2}.p6{grid-column:1;grid-row:3}.p7{grid-column:3;grid-row:3}
+.die.rolling{animation:roll .12s linear infinite alternate}@keyframes roll{from{transform:rotate(-9deg) scale(.96)}to{transform:rotate(9deg) scale(1.06)}}
+.turnLine{font-size:12px;color:#d9d9d9;margin-top:6px}
+.hudRow{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}.badge{border:1px solid #6d5618;background:#28200c;color:var(--gold2);border-radius:999px;padding:5px 8px;font-size:10px;font-weight:900}
+.talk,.event{margin-top:6px;border-radius:9px;padding:7px 9px;font-size:10px}.talk{background:#221b09;border:1px solid #604a12;color:var(--gold2)}.event{background:#111;border:1px solid #333;color:#ccc}.event b,.talk b{color:var(--gold2)}
+main{padding:7px}.boardWrap{overflow:auto;-webkit-overflow-scrolling:touch;border:1px solid #2f2f2f;border-radius:10px;background:#0d0d0d}
+.board{display:grid;grid-template-columns:repeat(11,70px);gap:3px;padding:4px;min-width:800px}
+.space{height:72px;border:1px solid #323232;border-radius:6px;background:#191919;padding:3px;position:relative;text-align:center}
+.space.special{border-color:#594610}.space.bando{background:#201b12}.space.income{background:#132015}.space.expense{background:#211515}.space.dark{background:#111;border-color:#666}
+.num{position:absolute;top:2px;left:4px;font-size:7px;color:#888}.icon{font-size:14px;line-height:1;margin-top:5px}.nm{font-size:7.5px;font-weight:800;line-height:1.05;margin-top:2px}.tokens{position:absolute;left:3px;right:3px;bottom:3px;display:flex;gap:2px;justify-content:center;flex-wrap:wrap}.token{width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;color:#111;font-weight:900;border:1px solid #eee}.t0{background:#f3cd3e}.t1{background:#56d1c8}.t2{background:#f37bb1}.t3{background:#7ed46b}
+.controls{position:fixed;left:6px;right:6px;bottom:6px;z-index:50;background:#101010f5;border:1px solid var(--border);border-radius:12px;padding:6px;display:grid;grid-template-columns:1.45fr 1fr 1fr;gap:5px}
+.controls button{font-size:11px;padding:8px}.rollBtn{grid-row:span 2;font-size:13px!important}.controls .wide{grid-column:span 1}
+.drawer{display:none;position:fixed;inset:0;z-index:70;background:#0b0b0bf8;overflow:auto;padding:10px 10px 120px}.drawer.open{display:block}.drawerTop{display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#0b0b0b;padding:4px 0 8px;z-index:2}
+.card{background:var(--panel);border:1px solid #333;border-radius:10px;padding:9px;margin-bottom:8px}.card h3{margin:0 0 7px;color:var(--gold);font-size:13px}
+.playerCard{background:var(--panel2);border:1px solid #333;border-radius:9px;padding:8px;margin-top:7px}.playerCard.active{border-color:var(--gold)}
+.playerHead{display:flex;justify-content:space-between;gap:6px;font-size:11px}.cpu{background:#27384e;border:1px solid #49698e;color:#c9e0ff;border-radius:10px;padding:2px 5px;font-size:8px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:6px}.stat{background:#292929;border-radius:6px;padding:5px;text-align:center;font-size:8px}.stat b{display:block;font-size:12px;color:#fff}
+details{margin-top:6px}summary{font-size:9px;color:var(--gold2);font-weight:800}.bandoItem{display:block;font-size:8px;color:#bbb;margin-top:3px}
+.log{font-size:9px;color:#bbb;line-height:1.45}.log div{border-bottom:1px solid #262626;padding:4px 0}
+.modalShade{display:none;position:fixed;inset:0;z-index:100;background:#000c;padding:14px;overflow:auto}.modalShade.open{display:flex;align-items:flex-start;justify-content:center}.modal{width:min(100%,430px);background:#161616;border:1px solid #67511a;border-radius:13px;padding:14px;margin-top:8vh}.modal h2{margin:0 0 8px;color:var(--gold)}.modal p{font-size:11px;color:#ccc;line-height:1.4}.modal label{display:block;font-size:10px;color:#bbb;margin-top:8px}.modal input,.modal select{width:100%;padding:10px;background:#242424;color:#fff;border:1px solid #444;border-radius:8px;margin-top:4px;min-height:44px}.modal .grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.modal .actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px}.modal .actions .full{grid-column:1/-1}
+.notice{position:fixed;left:50%;top:18%;transform:translateX(-50%);z-index:120;width:min(88vw,360px);background:#171717;border:2px solid var(--gold);border-radius:12px;padding:14px;text-align:center;box-shadow:0 10px 30px #000b}.notice h3{margin:0 0 5px;color:var(--gold2)}.notice p{font-size:11px;color:#ddd;margin:4px}
+.legend{font-size:9px;line-height:1.6;color:#bbb}
+
+@media (orientation:landscape) and (max-height:600px){
+  body{padding-bottom:78px}
+  header{padding:5px 8px}
+  h1{font-size:14px}
+  .titleRow{align-items:flex-start}
+  .die{width:32px;height:32px;padding:4px}
+  .pip{width:5px;height:5px}
+  .turnLine{font-size:10px;margin-top:3px}
+  .hudRow{margin-top:3px;gap:4px}
+  .badge{font-size:8px;padding:3px 6px}
+  .talk,.event{font-size:8px;padding:4px 6px;margin-top:3px}
+  main{padding:4px}
+  .board{grid-template-columns:repeat(11,56px);min-width:640px;gap:2px}
+  .space{height:52px;padding:2px}
+  .icon{font-size:11px;margin-top:3px}
+  .nm{font-size:6px}
+  .num{font-size:6px}
+  .token{width:13px;height:13px;font-size:6px}
+  .controls{left:4px;right:4px;bottom:3px;padding:4px;gap:3px}
+  .controls button{min-height:34px;padding:5px;font-size:9px}
+  .rollBtn{font-size:10px!important}
+  .modal{margin-top:2vh;max-height:92vh;overflow:auto}
+}
+
+@media(min-width:900px){body{padding-bottom:20px}.controls{position:sticky;bottom:8px;margin:8px auto;width:min(800px,95%)}.board{grid-template-columns:repeat(11,minmax(65px,1fr));min-width:0}.space{height:78px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="titleRow">
+    <h1>BAMMAZ <span class="gold">N THE HOOD</span><br><span style="font-size:11px;color:#aaa">Mobile v3.4 MOBILE POLISH</span></h1>
+    <div class="diceTop"><div id="die1" class="die"></div><div id="die2" class="die"></div></div>
+  </div>
+  <div id="turnLine" class="turnLine">Opening New Game setup...</div>
+  <div class="hudRow">
+    <span id="mailBadge" class="badge">MAIL BOX: 0</span>
+    <span id="wealthyBadge" class="badge">WEALTHY: 0 / 2</span>
+    <label class="badge"><input id="soundToggle" type="checkbox" checked> Sound</label>
+  </div>
+  <div id="talk" class="talk"><b>BAMMAZ:</b> Let the money talk.</div>
+  <div id="lastEvent" class="event"><b>LAST EVENT:</b> New Game setup.</div>
+</header>
+
+<main>
+  <div class="boardWrap"><div id="board" class="board"></div></div>
+</main>
+
+<div class="controls">
+  <button id="rollBtn" class="rollBtn">Pay 1 Coin & Roll</button>
+  <button id="buyBtn">Buy</button>
+  <button id="investBtn">Invest</button>
+  <button id="statsBtn" class="secondary">Stats</button>
+  <button id="endBtn" class="secondary">End Turn</button>
+</div>
+
+<div id="drawer" class="drawer">
+  <div class="drawerTop"><strong style="color:#d9aa1f">GAME INFO</strong><button id="closeDrawer" class="secondary">Close</button></div>
+  <div class="card"><h3>GAME STATUS</h3><div id="drawerStatus"></div></div>
+  <div class="card"><h3>PLAYER STATS</h3><div id="playerStats"></div></div>
+  <div class="card"><h3>BOARD SYMBOLS</h3><div class="legend">🏚️ BANDO &nbsp; 🛡️ Insurance &nbsp; ⚖️ Legal &nbsp; 🏛️ Court House<br>💰 Trap House &nbsp; 📅 1st of Month &nbsp; 🌵 Drought &nbsp; 🎲 Tax Refund<br>🪪 Identity Theft &nbsp; 🚔 Go To Jail &nbsp; 💵 Income &nbsp; 💸 Expense<br>⚡ Quick Flip &nbsp; ⬇️ Fumble &nbsp; 🔒 Jail &nbsp; 👑 Wealthy</div></div>
+  
+  <div class="card"><h3>RULES SNAPSHOT — PHYSICAL + DIGITAL</h3>
+    <div class="legend">
+      • Start with 4 coins.<br>
+      • Roll for order before gameplay; highest total goes first. Ties reroll.<br>
+      • Normal roll costs 1 coin to the MAIL BOX. Doubles = free roll.<br>
+      • Three consecutive doubles = HIPPOPOTAMUS: 5 additional free turns.<br>
+      • TRAP HOUSE pays 3 coins when reached or passed during normal forward movement.<br>
+      • JAIL bond reduces 3 → 2 → 1 → free as missed rolls are served.<br>
+      • COURT HOUSE: miss next roll, pay 1 coin, or use Prepaid Legal.<br>
+      • BANDO purchase = 2 coins. Investment max = +5.<br>
+      • WEALTHY requires exact landing. Overshoot stays in place.<br>
+      • First WEALTHY player may wait or pay 3 coins to re-enter at HOOD RICH and keep assets.<br>
+      • SETTLE UP begins after WEALTHY is reached twice total.
+    </div>
+  </div>
+
+  <div class="card"><h3>EVENT LOG</h3><div id="eventLog" class="log"></div></div>
+  <div class="card"><h3>AUDIO</h3><p style="font-size:10px;color:#bbb">If sound is on, tap below to confirm your phone is allowing game audio.</p><button id="soundTestBtn">Test Sound</button></div>
+  <div class="card"><h3>PLAYTEST LAB</h3><p style="font-size:10px;color:#bbb">Testing tools bypass normal movement.</p><button id="labBtn">Open Playtest Lab</button></div>
+  <button id="newGameBtn" class="secondary" style="width:100%">New Game</button>
+</div>
+
+<div id="modalShade" class="modalShade"><div id="modal" class="modal"></div></div>
+
+<script>
+"use strict";
+
+const CAREERS=["Barber / Stylist","Security Officer","Nurse","Mechanic","Bus Operator","Salesman"];
+const PERSONALITIES=["Hustler","Loudmouth","Strategist","Comedian","Motivator","Quiet Killer"];
+const BANDO=[9,14,18,24,25,29,37,41,45,53,56,59,64,76,81,83,86,91,92,96];
+const INS=[5,16,38,51,69], LEGAL=[17,30,42,60,79], COURT=[22,44,66,88], TRAP=[11,33,55,77];
+const FIRST=[6,26,34,50,70,93], TAX=[7,27,71], DROUGHT=[8,28,36,54,58,72,87,95];
+const IDENTITY=[57,63], GOJAIL=[35,61,94];
+const INCOME=[3,15,20,39,46,52,67,73,80,89], EXPENSE=[13,40,47,68,74,78,84,90];
+const QUICK={2:51,4:39,10:20,12:37,23:46,48:60,62:68,75:80,85:89};
+const FUMBLE={19:9,21:1,31:0,32:17,43:30,65:24,82:51,97:1};
+const BANDO_PAY=[1,2,4,6,8,10], BANDO_VALUE=[2,3,6,9,12,15];
+
+let G=null, audioCtx=null, noticeTimer=null;
+const $=id=>document.getElementById(id);
+const randDie=()=>1+Math.floor(Math.random()*6);
+const diePips={
+  1:[4],
+  2:[1,7],
+  3:[1,4,7],
+  4:[1,2,6,7],
+  5:[1,2,4,6,7],
+  6:[1,2,3,5,6,7]
+};
+function renderDie(el,n){
+  el.innerHTML=(diePips[n]||diePips[1]).map(i=>'<span class="pip p'+i+'"></span>').join('');
+}
+const current=()=>G.players[G.active];
+
+const TRASH={
+"Hustler":{doubles:["Free roll? That's leverage.","Keep the dice hot."],buy:["Another address in the portfolio.","You rent. I own."],win:["That's rent. Appreciate you."],lose:["Paid. Still building."],wealthy:["Assets did what assets do."]},
+"Loudmouth":{doubles:["DOUBLES! I know that hurt.","Keep watching. I'm not finished."],buy:["That's mine now. Don't land there."],win:["Pay up! Welcome to my property."],lose:["Enjoy it. I'm getting it back."],wealthy:["Say it louder: WEALTHY!"]},
+"Strategist":{doubles:["A free roll changes the math."],buy:["Acquisition complete."],win:["Return on investment."],lose:["Expense absorbed."],wealthy:["Execution beats luck."]},
+"Comedian":{doubles:["Free roll? Must be my credit score."],buy:["Welcome to my luxury fixer-upper."],win:["Thanks for visiting. Parking wasn't free."],lose:["My wallet just filed a complaint."],wealthy:["I would like to thank my dice."]},
+"Motivator":{doubles:["Momentum matters."],buy:["That's ownership. Keep building."],win:["Assets can pay you back."],lose:["Recover and keep moving."],wealthy:["The journey paid off."]},
+"Quiet Killer":{doubles:["Again."],buy:["Mine."],win:["Pay it."],lose:["Paid."],wealthy:["Finished."]}
+};
+
+function say(player,event){
+  if(!player)return;
+  const a=(TRASH[player.persona]||TRASH.Hustler)[event]||[];
+  if(!a.length)return;
+  const line=a[Math.floor(Math.random()*a.length)];
+  $("talk").innerHTML="<b>"+escapeHtml(player.name)+":</b> "+escapeHtml(line);
+  log("TRASH TALK - "+player.name+": "+line,false);
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+
+function log(msg,rerender=true){
+  if(!G)return;
+  G.log.push(msg);
+  $("lastEvent").innerHTML="<b>LAST EVENT:</b> "+escapeHtml(msg);
+  if(rerender)render();
+}
+
+function gameNotice(title,msg,ms=1400){
+  const old=$("gameNotice"); if(old)old.remove();
+  clearTimeout(noticeTimer);
+  const d=document.createElement("div"); d.id="gameNotice"; d.className="notice";
+  d.innerHTML="<h3>"+escapeHtml(title)+"</h3><p>"+escapeHtml(msg)+"</p>";
+  document.body.appendChild(d);
+  noticeTimer=setTimeout(()=>d.remove(),ms);
+}
+
+function soundOn(){return $("soundToggle").checked}
+let audioUnlocked=false;
+
+async function ensureAudio(){
+  if(!soundOn())return null;
+  try{
+    if(!audioCtx){
+      audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    }
+    if(audioCtx.state==="suspended"){
+      await audioCtx.resume();
+    }
+    audioUnlocked=audioCtx.state==="running";
+    if(audioUnlocked && $("soundToggle")) $("soundToggle").title="Audio active";
+    return audioCtx;
+  }catch(e){
+    console.warn("Audio unavailable",e);
+    return null;
+  }
+}
+
+async function tone(freq,dur=.09,type="sine",vol=.08,delay=0){
+  const c=await ensureAudio(); if(!c)return;
+  try{
+    const o=c.createOscillator(),g=c.createGain(),t=c.currentTime+delay;
+    o.type=type;
+    o.frequency.setValueAtTime(freq,t);
+    g.gain.setValueAtTime(.0001,t);
+    g.gain.exponentialRampToValueAtTime(vol,t+.01);
+    g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    o.connect(g);g.connect(c.destination);
+    o.start(t);o.stop(t+dur+.03);
+  }catch(e){console.warn("Tone error",e)}
+}
+
+async function sfx(kind){
+  if(!soundOn())return;
+  await ensureAudio();
+  if(kind==="dice"){
+    [210,280,190,330,240].forEach((f,i)=>tone(f,.065,"square",.07,i*.055));
+  }
+  if(kind==="coin"){
+    tone(760,.08,"sine",.09,0);tone(1040,.11,"sine",.08,.075);
+  }
+  if(kind==="buy"){
+    tone(440,.09,"triangle",.08,0);tone(660,.1,"triangle",.075,.09);tone(880,.11,"triangle",.07,.18);
+  }
+  if(kind==="bad"){
+    tone(260,.12,"sawtooth",.07,0);tone(170,.17,"sawtooth",.06,.11);
+  }
+  if(kind==="wealthy"){
+    [523,659,784,1047].forEach((f,i)=>tone(f,.16,"triangle",.09,i*.1));
+  }
+}
+
+async function soundConfirmation(){
+  if(!soundOn())return;
+  const c=await ensureAudio();
+  if(!c || c.state!=="running"){
+    gameNotice("SOUND BLOCKED","Tap the page once, then try Test Sound again.",1200);
+    return;
+  }
+  tone(660,.08,"sine",.08,0);
+  tone(880,.1,"sine",.07,.08);
+  gameNotice("SOUND ON","Audio enabled.",800);
+}
+
+function openModal(html){
+  $("modal").innerHTML=html;
+  $("modalShade").classList.add("open");
+}
+function closeModal(){$("modalShade").classList.remove("open");$("modal").innerHTML=""}
+
+function newGame(){
+  G={players:[],active:0,round:1,phase:"setup",mail:0,bank:250,bandos:{},wealthyReaches:[],log:[],finished:false,busy:false};
+  render();
+  openModal(`<h2>NEW GAME</h2>
+    <p>Choose Human or Computer for each seat. Player 1 defaults to Human.</p>
+    <label>Players<select id="setupCount"><option>2</option><option>3</option><option selected>4</option></select></label>
+    <div id="setupPlayers"></div>
+    <div class="actions"><button id="startGame" class="full">Start Game</button></div>`);
+  const count=$("setupCount"),wrap=$("setupPlayers");
+  function buildSeats(){
+    wrap.innerHTML="";
+    for(let i=0;i<Number(count.value);i++){
+      const d=document.createElement("div"); d.className="card";
+      d.innerHTML=`<div class="grid">
+        <label>Name<input id="pn${i}" value="${i===0?"You":"CPU "+i}"></label>
+        <label>Type<select id="pt${i}"><option ${i===0?"selected":""}>Human</option><option ${i>0?"selected":""}>Computer</option></select></label>
+        <label>Career<select id="pc${i}">${CAREERS.map((x,j)=>`<option ${i===j?"selected":""}>${x}</option>`).join("")}</select></label>
+        <label>Personality<select id="pp${i}">${PERSONALITIES.map((x,j)=>`<option ${i%PERSONALITIES.length===j?"selected":""}>${x}</option>`).join("")}</select></label>
+      </div>`;
+      wrap.appendChild(d);
+    }
+  }
+  count.addEventListener("change",buildSeats); buildSeats();
+  $("startGame").onclick=async()=>{
+    if(soundOn())await ensureAudio();
+    G.players=[];
+    for(let i=0;i<Number(count.value);i++){
+      G.players.push({name:$("pn"+i).value||("Player "+(i+1)),career:$("pc"+i).value,persona:$("pp"+i).value,cpu:$("pt"+i).value==="Computer",coins:4,pos:0,ins:0,legal:0,jail:0,courtSkip:false,waiting:false,doubles:0,freeRoll:false});
+    }
+    closeModal();
+    startOrderRoll();
+  };
+}
+
+
+function startOrderRoll(){
+  G.phase="order";
+  G.orderRolls=G.players.map(()=>null);
+  G.orderTiebreak={};
+  G.orderIndex=0;
+  log("ROLL FOR ORDER started. Highest total goes first.");
+  showOrderRollStep();
+}
+
+function showOrderRollStep(){
+  const i=G.orderIndex;
+  if(i>=G.players.length)return resolveOrderRolls();
+
+  const p=G.players[i];
+  const rows=G.players.map((x,j)=>{
+    const r=G.orderRolls[j];
+    return `<p style="margin:4px 0">${j+1}. ${escapeHtml(x.name)}: <b>${r==null?"—":r}</b></p>`;
+  }).join("");
+
+  openModal(`<h2>ROLL FOR ORDER</h2>
+    <p>Every player rolls both dice once. Highest total goes first.</p>
+    <div class="card">${rows}</div>
+    <p><b>${escapeHtml(p.name)}</b> rolls now.</p>
+    <div class="actions"><button id="orderRollBtn" class="full">${p.cpu?"Computer Rolling...":"Roll for Order"}</button></div>`);
+
+  if(p.cpu){
+    $("orderRollBtn").disabled=true;
+    setTimeout(()=>performOrderRoll(i),500);
+  }else{
+    $("orderRollBtn").onclick=()=>performOrderRoll(i);
+  }
+}
+
+function performOrderRoll(i){
+  closeModal();
+  animateDice((a,b)=>{
+    const total=a+b;
+    G.orderRolls[i]=total;
+    log(G.players[i].name+" rolled "+a+" + "+b+" = "+total+" for turn order.");
+    G.orderIndex++;
+    setTimeout(showOrderRollStep,350);
+  });
+}
+
+function resolveOrderRolls(){
+  const groups={};
+  G.orderRolls.forEach((score,i)=>(groups[score]||(groups[score]=[])).push(i));
+  const ties=Object.keys(groups).map(Number).filter(score=>groups[score].length>1);
+
+  if(ties.length)return startOrderTiebreak(ties,0);
+
+  finalizeTurnOrder();
+}
+
+function startOrderTiebreak(tieScores,tieGroupIndex){
+  if(tieGroupIndex>=tieScores.length)return finalizeTurnOrder();
+
+  const score=tieScores[tieGroupIndex];
+  const ids=G.orderRolls.map((v,i)=>v===score?i:null).filter(v=>v!==null);
+  runTieGroup(ids,score,()=>startOrderTiebreak(tieScores,tieGroupIndex+1));
+}
+
+function runTieGroup(ids,baseScore,done){
+  const tieRolls={};
+  let idx=0;
+
+  function step(){
+    if(idx>=ids.length){
+      const vals=Object.values(tieRolls);
+      if(new Set(vals).size!==vals.length){
+        gameNotice("TURN ORDER TIE","Tie remains. Those players reroll.",900);
+        return setTimeout(()=>runTieGroup(ids,baseScore,done),950);
+      }
+
+      ids.sort((a,b)=>tieRolls[b]-tieRolls[a]);
+
+      // Preserve the original shared score while using tiny decimal offsets
+      // only internally to establish descending order among tied players.
+      ids.forEach((id,rank)=>{
+        G.orderRolls[id]=baseScore-(rank*.001);
+      });
+      return done();
+    }
+
+    const id=ids[idx],p=G.players[id];
+    openModal(`<h2>TURN ORDER TIEBREAK</h2>
+      <p><b>${escapeHtml(p.name)}</b> tied at ${baseScore}.</p>
+      <p>Roll both dice again to break the tie.</p>
+      <div class="actions"><button id="tieRollBtn" class="full">${p.cpu?"Computer Rolling...":"Reroll"}</button></div>`);
+
+    const rollIt=()=>{
+      closeModal();
+      animateDice((a,b)=>{
+        tieRolls[id]=a+b;
+        log(p.name+" tiebreak roll: "+a+" + "+b+" = "+(a+b)+".");
+        idx++;
+        setTimeout(step,300);
+      });
+    };
+
+    if(p.cpu){
+      $("tieRollBtn").disabled=true;
+      setTimeout(rollIt,500);
+    }else $("tieRollBtn").onclick=rollIt;
+  }
+
+  step();
+}
+
+function finalizeTurnOrder(){
+  const originalPlayers=G.players.slice();
+  const order=G.players.map((_,i)=>i).sort((a,b)=>G.orderRolls[b]-G.orderRolls[a]);
+  G.players=order.map(i=>originalPlayers[i]);
+
+  G.active=0;
+  G.round=1;
+  G.phase="roll";
+  G.orderRolls=null;
+
+  const rows=G.players.map((p,i)=>`<p><b>${i+1}. ${escapeHtml(p.name)}</b> — ${escapeHtml(p.career)}</p>`).join("");
+  log("Turn order set: "+G.players.map(p=>p.name).join(" → ")+".",false);
+  render();
+
+  openModal(`<h2>TURN ORDER SET</h2>
+    <p>Highest roll goes first.</p>
+    <div class="card">${rows}</div>
+    <div class="actions"><button id="beginGameBtn" class="full">Begin Game</button></div>`);
+
+  $("beginGameBtn").onclick=()=>{
+    closeModal();
+    log(G.players[0].name+" goes first. Normal gameplay begins.");
+    render();
+    scheduleCPU();
+  };
+}
+
+function spaceName(n){
+  if(n===0)return "HOOD RICH"; if(n===98)return "WEALTHY"; if(n===49)return "JAIL";
+  if(BANDO.includes(n))return "BANDO"; if(INS.includes(n))return "INSURANCE"; if(LEGAL.includes(n))return "PREPAID LEGAL";
+  if(COURT.includes(n))return "COURT HOUSE"; if(TRAP.includes(n))return "TRAP HOUSE"; if(FIRST.includes(n))return "1ST OF THE MONTH";
+  if(TAX.includes(n))return "TAX REFUND"; if(DROUGHT.includes(n))return "DROUGHT"; if(IDENTITY.includes(n))return "IDENTITY THEFT";
+  if(GOJAIL.includes(n))return "GO TO JAIL"; if(INCOME.includes(n))return "INCOME"; if(EXPENSE.includes(n))return "EXPENSE";
+  if(QUICK[n]!=null)return "QUICK FLIP"; if(FUMBLE[n]!=null)return "FUMBLE"; return "";
+}
+function symbol(n){
+  if(n===0)return "🏠"; if(n===98)return "👑"; if(n===49)return "🔒"; if(BANDO.includes(n))return "🏚️";
+  if(INS.includes(n))return "🛡️"; if(LEGAL.includes(n))return "⚖️"; if(COURT.includes(n))return "🏛️"; if(TRAP.includes(n))return "💰";
+  if(FIRST.includes(n))return "📅"; if(TAX.includes(n))return "🎲"; if(DROUGHT.includes(n))return "🌵"; if(IDENTITY.includes(n))return "🪪";
+  if(GOJAIL.includes(n))return "🚔"; if(INCOME.includes(n))return "💵"; if(EXPENSE.includes(n))return "💸"; if(QUICK[n]!=null)return "⚡"; if(FUMBLE[n]!=null)return "⬇️"; return "";
+}
+function boardOrder(){
+  const out=[];
+  for(let r=8;r>=0;r--){
+    let row=[...Array(11)].map((_,j)=>r*11+j);
+    if(r%2)row.reverse();
+    out.push(...row);
+  }
+  return out;
+}
+function renderBoard(){
+  let h="";
+  for(const n of boardOrder()){
+    const nm=spaceName(n), special=nm?" special":"";
+    let cls="space"+special+(BANDO.includes(n)?" bando":"")+(INCOME.includes(n)?" income":"")+(EXPENSE.includes(n)?" expense":"")+([0,49,98].includes(n)?" dark":"");
+    const tokens=G?G.players.map((p,i)=>p.pos===n?`<span class="token t${i}">${i+1}</span>`:"").join(""):"";
+    h+=`<div class="${cls}"><div class="num">${n}</div><div class="icon">${symbol(n)}</div><div class="nm">${nm}</div><div class="tokens">${tokens}</div></div>`;
+  }
+  $("board").innerHTML=h;
+}
+function ownedBandos(i){return Object.keys(G.bandos).filter(k=>G.bandos[k].owner===i).map(Number).sort((a,b)=>a-b)}
+function render(){
+  renderBoard();
+  if(!G||!G.players.length){
+    $("turnLine").textContent="New Game setup";
+    $("mailBadge").textContent="MAIL BOX: "+(G?G.mail:0); $("wealthyBadge").textContent="WEALTHY: 0 / 2";
+    ["rollBtn","buyBtn","investBtn","endBtn"].forEach(id=>$(id).disabled=true);
+    return;
+  }
+  const p=current(), n=p.pos, free=p.freeRoll;
+  $("turnLine").innerHTML=`Round ${G.round} | ${escapeHtml(p.name)}${p.cpu?' <span class="cpu">CPU</span>':''} | Coins ${p.coins} | Space ${p.pos}${free?' | FREE ROLL':''}`;
+  $("mailBadge").textContent="MAIL BOX: "+G.mail; $("wealthyBadge").textContent="WEALTHY: "+G.wealthyReaches.length+" / 2";
+  const canB=BANDO.includes(n)&&!G.bandos[n]&&p.coins>=2,canI=INS.includes(n)&&p.coins>=1,canL=LEGAL.includes(n)&&p.coins>=1;
+  $("rollBtn").disabled=G.finished||p.cpu||p.waiting||G.busy||(!free&&G.phase!=="roll");
+  $("rollBtn").textContent=free?"FREE ROLL - DOUBLES":"Pay 1 Coin & Roll";
+  $("buyBtn").disabled=G.finished||p.cpu||G.busy||G.phase!=="action"||!(canB||canI||canL);
+  $("buyBtn").textContent=canB?"Buy BANDO":canI?"Buy Insurance":canL?"Buy Legal":"Buy";
+  $("investBtn").disabled=G.finished||p.cpu||G.busy||G.phase!=="action"||ownedBandos(G.active).every(k=>G.bandos[k].invest>=5)||p.coins<1;
+  $("endBtn").disabled=G.finished||p.cpu||G.busy||G.phase!=="action"||free;
+  drawStats();
+}
+function drawStats(){
+  if(!G)return;
+  $("drawerStatus").innerHTML=`MAIL BOX: <b>${G.mail}</b><br>Bank: <b>${G.bank}</b><br>WEALTHY reaches: <b>${G.wealthyReaches.length}/2</b>`;
+  $("playerStats").innerHTML=G.players.map((p,i)=>{
+    const owned=ownedBandos(i),invested=owned.reduce((s,k)=>s+G.bandos[k].invest,0);
+    const details=owned.length?owned.map(k=>`<span class="bandoItem">#${k} +${G.bandos[k].invest} | Pay ${BANDO_PAY[G.bandos[k].invest]} | Value ${BANDO_VALUE[G.bandos[k].invest]}</span>`).join(""):"<span class='bandoItem'>No BANDOs owned.</span>";
+    return `<div class="playerCard ${i===G.active&&!G.finished?"active":""}"><div class="playerHead"><b>${escapeHtml(p.name)} ${p.cpu?'<span class="cpu">CPU</span>':''}</b><span>${escapeHtml(p.career)}</span></div><div style="font-size:9px;color:#d9aa1f">${escapeHtml(p.persona)}</div>
+      <div class="stats"><div class="stat">COINS<b>${p.coins}</b></div><div class="stat">SPACE<b>${p.pos}</b></div><div class="stat">BANDOs<b>${owned.length}</b></div><div class="stat">INVESTED<b>${invested}</b></div><div class="stat">INSURANCE<b>${p.ins}</b></div><div class="stat">LEGAL<b>${p.legal}</b></div></div>
+      ${p.jail?`<div style="font-size:9px;color:#ffb86b;margin-top:5px">JAIL: ${p.jail} missed roll(s) remain | Bond: ${p.jail}</div>`:""}
+      ${p.courtSkip?'<div style="font-size:9px;color:#ffb86b;margin-top:5px">COURT HOUSE: next roll skipped</div>':""}
+      <details><summary>OWNED BANDOs (${owned.length})</summary>${details}</details></div>`;
+  }).join("");
+  $("eventLog").innerHTML=G.log.slice().reverse().map(x=>"<div>"+escapeHtml(x)+"</div>").join("");
+}
+
+function animateDice(cb){
+  G.busy=true; render();
+  $("die1").classList.add("rolling");$("die2").classList.add("rolling");sfx("dice");
+  let c=0,t=setInterval(()=>{
+    renderDie($("die1"),randDie());renderDie($("die2"),randDie());c++;
+    if(c>=7){clearInterval(t);const a=randDie(),b=randDie();renderDie($("die1"),a);renderDie($("die2"),b);$("die1").classList.remove("rolling");$("die2").classList.remove("rolling");G.busy=false;render();setTimeout(()=>cb(a,b),80)}
+  },65);
+}
+function passedTraps(start,end){
+  if(end<=start)return [];
+  return TRAP.filter(t=>t>start&&t<end);
+}
+function collectPassedTraps(p,start,end){
+  for(const t of passedTraps(start,end)){p.coins+=3;G.bank-=3;log(p.name+" passed TRAP HOUSE #"+t+" and collected 3 coins.",false);sfx("coin")}
+}
+function moveNormal(p,sum,done){
+  const start=p.pos;
+  if(start+sum>98){log(p.name+" overshot WEALTHY and stayed on #"+start+".");return done()}
+  collectPassedTraps(p,start,start+sum);
+  p.pos=start+sum; render(); resolveLanding(p,p.pos,done,true);
+}
+function resolveSpecialDestination(p,done){
+  if(TAX.includes(p.pos))return taxRefund(p,done);
+  if(GOJAIL.includes(p.pos))return goToJail(p,done);
+  if(FUMBLE[p.pos]===1){p.coins+=G.mail;G.mail=0;sfx("coin");log(p.name+" collected the MAIL BOX.",false)}
+  done();
+}
+function resolveLanding(p,n,done,direct){
+  if(n===98)return wealthy(p,done);
+  if(INCOME.includes(n)){const v=n%2?1:2;p.coins+=v;G.bank-=v;sfx("coin");log(p.name+" collected "+v+" income coin"+(v===1?"":"s")+".");return done()}
+  if(EXPENSE.includes(n)){const v=n%2?1:2,paid=Math.min(v,p.coins);p.coins-=paid;G.mail+=paid;log(p.name+" paid "+paid+" expense coin"+(paid===1?"":"s")+".");if(p.coins===0)return returnHoodRich(p,"expense depleted liquid coins",done);return done()}
+  if(TRAP.includes(n)){p.coins+=3;G.bank-=3;sfx("coin");log(p.name+" reached TRAP HOUSE #"+n+" and collected 3 coins.");return done()}
+  if(FIRST.includes(n))return movementDice(p,true,done);
+  if(DROUGHT.includes(n))return movementDice(p,false,done);
+  if(TAX.includes(n))return taxRefund(p,done);
+  if(IDENTITY.includes(n))return identityTheft(p,done);
+  if(GOJAIL.includes(n))return goToJail(p,done);
+  if(COURT.includes(n))return courtHouse(p,done);
+  if(QUICK[n]!=null){p.pos=QUICK[n];log(p.name+" QUICK FLIP moved to #"+p.pos+".");render();return resolveSpecialDestination(p,done)}
+  if(FUMBLE[n]!=null){p.pos=FUMBLE[n];log(p.name+" FUMBLE moved to #"+p.pos+".");render();if(p.pos===1){p.coins+=G.mail;G.mail=0;sfx("coin");log(p.name+" collected the MAIL BOX.",false)}return resolveSpecialDestination(p,done)}
+  if(BANDO.includes(n)&&G.bandos[n]&&G.bandos[n].owner!==G.active)return bandoDebt(p,n,done);
+  done();
+}
+function movementDice(p,forward,done){
+  animateDice((a,b)=>{
+    const m=forward?Math.min(a,b):Math.max(a,b),old=p.pos;
+    p.pos=forward?Math.min(98,p.pos+m):Math.max(0,p.pos-m);
+    log(p.name+(forward?" 1ST OF THE MONTH +":" DROUGHT -")+m+" spaces to #"+p.pos+".");
+    render();resolveSpecialDestination(p,done);
+  });
+}
+function taxRefund(p,done){
+  log(p.name+" hit TAX REFUND - free roll.");
+  animateDice((a,b)=>{log(p.name+" TAX REFUND roll: "+a+"+"+b+".",false);moveNormal(p,a+b,done)});
+}
+function identityTheft(p,done){
+  if(p.cpu){
+    if(p.ins){p.ins--;log(p.name+" used Insurance against Identity Theft.");return done()}
+    p.pos=Math.max(0,p.pos-22);log(p.name+" Identity Theft: moved back 22 spaces.");return done();
+  }
+  if(p.ins){
+    openModal(`<h2>IDENTITY THEFT</h2><p>Use BAMMAZ Insurance, or move back 22 spaces.</p><div class="actions"><button id="idIns">Use Insurance</button><button id="idMove" class="secondary">Move Back 22</button></div>`);
+    $("idIns").onclick=()=>{p.ins--;closeModal();log(p.name+" used Insurance against Identity Theft.");done()};
+    $("idMove").onclick=()=>{p.pos=Math.max(0,p.pos-22);closeModal();log(p.name+" Identity Theft: moved back 22 spaces.");done()};
+    return;
+  }
+  p.pos=Math.max(0,p.pos-22);log(p.name+" Identity Theft: moved back 22 spaces.");done();
+}
+function goToJail(p,done){
+  if(p.cpu){
+    if(p.legal){p.legal--;log(p.name+" used Prepaid Legal and avoided GO TO JAIL.");return done()}
+    p.pos=49;p.jail=3;sfx("bad");log(p.name+" was detained and sent to JAIL #49.");gameNotice("GO TO JAIL",p.name+" moved directly to JAIL #49.");return done();
+  }
+  if(p.legal){
+    openModal(`<h2>GO TO JAIL</h2><p>Use Prepaid Legal to avoid detention, or go directly to JAIL #49.</p><div class="actions"><button id="gjLegal">Use Prepaid Legal</button><button id="gjJail" class="secondary">Go to JAIL</button></div>`);
+    $("gjLegal").onclick=()=>{p.legal--;closeModal();log(p.name+" used Prepaid Legal and avoided GO TO JAIL.");done()};
+    $("gjJail").onclick=()=>{closeModal();sendToJail(p,done)};
+  }else sendToJail(p,done);
+}
+function sendToJail(p,done){
+  p.pos=49;p.jail=3;sfx("bad");log(p.name+" was detained and sent to JAIL #49.");render();
+  openModal(`<h2>DETAINED - JAIL #49</h2><p>Initial bond is <b>3 coins</b>. Pay now, or miss a roll. Each missed roll reduces bond by 1: <b>3 → 2 → 1 → free</b>.</p><div class="actions">${p.coins>=3?'<button id="jPayNow">Pay 3 & Get Out</button>':""}<button id="jStay" class="secondary">Stay Detained</button></div>`);
+  if(p.coins>=3)$("jPayNow").onclick=()=>{p.coins-=3;G.mail+=3;p.jail=0;closeModal();log(p.name+" paid 3 coins and was released from JAIL.");done()};
+  $("jStay").onclick=()=>{closeModal();log(p.name+" chose to remain detained.");done()};
+}
+function jailTurn(p){
+  const bond=Math.max(0,p.jail);
+  if(p.cpu){
+    if(bond>0&&p.coins>=bond+1){p.coins-=bond;G.mail+=bond;p.jail=0;log(p.name+" paid reduced bond of "+bond+" and left JAIL.");return setTimeout(()=>roll(false),500)}
+    p.jail--;
+    if(p.jail<=0){p.jail=0;log(p.name+" served all 3 missed rolls and is released free.");gameNotice("JAIL - TIME SERVED",p.name+" is released free.");return setTimeout(advanceTurn,1300)}
+    log(p.name+" missed a roll in JAIL. Bond reduced to "+p.jail+".");gameNotice("JAIL - BOND REDUCED",p.name+" missed this roll. Bond is now "+p.jail+".");return setTimeout(advanceTurn,1400);
+  }
+  openModal(`<h2>JAIL #49</h2><p>Current bond: <b>${bond} coin${bond===1?"":"s"}</b>. Each missed roll reduces it by 1.</p><div class="actions"><button id="jMiss">Miss Roll - Reduce Bond</button>${bond>0&&p.coins>=bond?`<button id="jPay">Pay ${bond} & Roll</button>`:""}</div>`);
+  $("jMiss").onclick=()=>{p.jail--;closeModal();if(p.jail<=0){p.jail=0;log(p.name+" served all 3 missed rolls and is released free.");gameNotice("JAIL - TIME SERVED",p.name+" is released free.");return setTimeout(advanceTurn,1300)}log(p.name+" missed a roll in JAIL. Bond reduced to "+p.jail+".");gameNotice("JAIL - BOND REDUCED",p.name+" missed this roll. Bond is now "+p.jail+".");setTimeout(advanceTurn,1400)};
+  if(bond>0&&p.coins>=bond)$("jPay").onclick=()=>{p.coins-=bond;G.mail+=bond;p.jail=0;closeModal();log(p.name+" paid reduced bond of "+bond+" and left JAIL.");setTimeout(()=>roll(false),500)};
+}
+function courtHouse(p,done){
+  if(p.cpu){
+    if(p.legal){p.legal--;log(p.name+" used Prepaid Legal at COURT HOUSE.");return done()}
+    if(p.coins>=2){p.coins--;G.mail++;log(p.name+" paid 1 coin at COURT HOUSE and kept next roll.");return done()}
+    p.courtSkip=true;log(p.name+" chose COURT HOUSE penalty: MISS NEXT ROLL.");return done();
+  }
+  openModal(`<h2>COURT HOUSE</h2><p>Choose one: miss your next roll, pay 1 coin to the MAIL BOX to keep it, or surrender Prepaid Legal.</p><div class="actions"><button id="cMiss">Miss Next Roll</button>${p.coins>=1?'<button id="cPay">Pay 1 & Keep Roll</button>':""}${p.legal>=1?'<button id="cLegal">Use Prepaid Legal</button>':""}</div>`);
+  $("cMiss").onclick=()=>{p.courtSkip=true;closeModal();log(p.name+" chose COURT HOUSE penalty: MISS NEXT ROLL.");done()};
+  if(p.coins>=1)$("cPay").onclick=()=>{p.coins--;G.mail++;closeModal();log(p.name+" paid 1 coin at COURT HOUSE and kept next roll.");done()};
+  if(p.legal>=1)$("cLegal").onclick=()=>{p.legal--;closeModal();log(p.name+" used Prepaid Legal at COURT HOUSE.");done()};
+}
+function bandoDebt(p,n,done){
+  const b=G.bandos[n],owner=G.players[b.owner],cost=BANDO_PAY[b.invest];
+  function pay(){
+    const liquid=Math.min(p.coins,cost);p.coins-=liquid;owner.coins+=liquid;let rem=cost-liquid;
+    for(const k of ownedBandos(G.active)){
+      while(rem>0&&G.bandos[k].invest>0){G.bandos[k].invest--;owner.coins++;rem--}
+      if(!rem)break;
+    }
+    log(p.name+" settled BANDO #"+n+" obligation to "+owner.name+".");say(owner,"win");say(p,"lose");
+    const investedLeft=ownedBandos(G.active).reduce((s,k)=>s+G.bandos[k].invest,0);
+    if(p.coins===0&&investedLeft===0)return returnHoodRich(p,"BANDO debt depleted all available coins",done);
+    done();
+  }
+  if(p.cpu){
+    if(p.ins&&(cost>=4||cost>p.coins)){p.ins--;log(p.name+" used Insurance to settle entire BANDO debt.");return done()}
+    return pay();
+  }
+  openModal(`<h2>BANDO PAYMENT DUE</h2><p>${escapeHtml(p.name)} owes ${escapeHtml(owner.name)} <b>${cost} coin${cost===1?"":"s"}</b> on BANDO #${n}.</p><div class="actions">${p.ins?'<button id="bdIns">Use Insurance</button>':""}<button id="bdPay">Pay Debt</button></div>`);
+  if(p.ins)$("bdIns").onclick=()=>{p.ins--;closeModal();log(p.name+" used Insurance to settle entire BANDO debt.");done()};
+  $("bdPay").onclick=()=>{closeModal();pay()};
+}
+function returnHoodRich(p,reason,done=()=>{}){
+  p.pos=0;p.coins=3;log(p.name+" returned to HOOD RICH and collected 3 coins - "+reason+".");gameNotice("RETURN TO HOOD RICH",p.name+" is out of available coins. Return to HOOD RICH and collect 3 coins.",1600);done();
+}
+function wealthy(p,done){
+  G.wealthyReaches.push(G.active);sfx("wealthy");say(p,"wealthy");log(p.name+" reached WEALTHY.");
+  if(G.wealthyReaches.length>=2)return settleUp();
+  if(p.cpu){
+    if(p.coins>=6){p.coins-=3;G.bank+=3;p.pos=0;log(p.name+" paid 3 coins and re-entered at HOOD RICH.");return done()}
+    p.waiting=true;log(p.name+" chose to wait at WEALTHY.");return done();
+  }
+  openModal(`<h2>WEALTHY</h2><p>You reached WEALTHY. Wait here, or pay <b>3 coins</b> to the Bank, return to HOOD RICH, keep all assets, and pursue a second WEALTHY reach.</p><div class="actions"><button id="wWait">Wait at WEALTHY</button>${p.coins>=3?'<button id="wRe">Pay 3 & Re-enter</button>':""}</div>`);
+  $("wWait").onclick=()=>{p.waiting=true;closeModal();log(p.name+" chose to wait at WEALTHY.");done()};
+  if(p.coins>=3)$("wRe").onclick=()=>{p.coins-=3;G.bank+=3;p.pos=0;closeModal();log(p.name+" paid 3 coins and re-entered at HOOD RICH.");done()};
+}
+function totalWealth(i){return G.players[i].coins+ownedBandos(i).reduce((s,k)=>s+BANDO_VALUE[G.bandos[k].invest],0)}
+function tieRoll(){return randDie()+randDie()}
+function rankIds(ids){
+  const groups={};ids.forEach(i=>{const t=totalWealth(i);(groups[t]||(groups[t]=[])).push(i)});
+  const out=[];Object.keys(groups).map(Number).sort((a,b)=>b-a).forEach(t=>{
+    const g=groups[t]; if(g.length===1)return out.push(g[0]);
+    let scores={},unique=false;while(!unique){scores={};const seen=new Set();unique=true;g.forEach(i=>{scores[i]=tieRoll();if(seen.has(scores[i]))unique=false;seen.add(scores[i])})}
+    g.sort((a,b)=>scores[b]-scores[a]);g.forEach(i=>log(G.players[i].name+" SETTLE UP tiebreak roll: "+scores[i],false));out.push(...g);
+  });return out;
+}
+function settleUp(){
+  G.finished=true;G.phase="done";
+  const ids=G.players.map((_,i)=>i);let ranked;
+  if(G.wealthyReaches[0]===G.wealthyReaches[1]){const champ=G.wealthyReaches[0];ranked=[champ,...rankIds(ids.filter(i=>i!==champ))];log(G.players[champ].name+" reached WEALTHY twice and automatically takes 1st place.",false)}
+  else ranked=rankIds(ids);
+  const rows=ranked.map((i,p)=>`<p><b>${p+1}. ${escapeHtml(G.players[i].name)}</b> - Total Wealth: ${totalWealth(i)}</p>`).join("");
+  render();openModal("<h2>SETTLE UP</h2>"+rows+'<div class="actions"><button id="settleNew" class="full">New Game</button></div>');$("settleNew").onclick=newGame;
+}
+
+function buyCurrent(){
+  const p=current(),n=p.pos;
+  if(BANDO.includes(n)&&!G.bandos[n]&&p.coins>=2){p.coins-=2;G.bank+=2;G.bandos[n]={owner:G.active,invest:0};sfx("buy");say(p,"buy");log(p.name+" bought BANDO #"+n+" for 2 coins.");return}
+  if(INS.includes(n)&&p.coins>=1){p.coins--;G.bank++;p.ins++;sfx("buy");log(p.name+" bought BAMMAZ Insurance.");return}
+  if(LEGAL.includes(n)&&p.coins>=1){p.coins--;G.bank++;p.legal++;sfx("buy");log(p.name+" bought Prepaid Legal.");return}
+}
+function investCurrent(){
+  const p=current(),owned=ownedBandos(G.active).filter(k=>G.bandos[k].invest<5);
+  if(!owned.length||p.coins<1)return;
+  if(p.cpu){
+    const k=owned[0],amt=Math.min(2,5-G.bandos[k].invest,Math.max(0,p.coins-2));if(amt){p.coins-=amt;G.bandos[k].invest+=amt;log(p.name+" invested "+amt+" coin"+(amt===1?"":"s")+" in BANDO #"+k+".")}return render();
+  }
+  openModal(`<h2>INVEST IN BANDO</h2><label>BANDO<select id="invB">${owned.map(k=>`<option value="${k}">BANDO #${k} (+${G.bandos[k].invest})</option>`).join("")}</select></label><label>Coins<select id="invA"></select></label><p>Maximum investment level is +5. Invested coins remain on the deed.</p><div class="actions"><button id="invGo">Invest</button><button id="invCancel" class="secondary">Cancel</button></div>`);
+  function amounts(){const k=Number($("invB").value),max=Math.min(5-G.bandos[k].invest,p.coins);$("invA").innerHTML=[...Array(max)].map((_,i)=>`<option>${i+1}</option>`).join("")}
+  $("invB").onchange=amounts;amounts();
+  $("invGo").onclick=()=>{const k=Number($("invB").value),a=Number($("invA").value);p.coins-=a;G.bandos[k].invest+=a;closeModal();sfx("buy");log(p.name+" invested "+a+" coin"+(a===1?"":"s")+" in BANDO #"+k+".")};
+  $("invCancel").onclick=closeModal;
+}
+function promptUnownedBando(p){
+  if(!BANDO.includes(p.pos)||G.bandos[p.pos]||p.coins<2||p.cpu)return false;
+  openModal(`<h2>BANDO FOR SALE</h2><p>You landed directly on unowned BANDO #${p.pos}. Purchase price: <b>2 coins</b>.</p><div class="actions"><button id="bBuy">Buy BANDO</button><button id="bPass" class="secondary">Pass</button></div>`);
+  $("bBuy").onclick=()=>{closeModal();buyCurrent()};
+  $("bPass").onclick=()=>{closeModal();log(p.name+" passed on BANDO #"+p.pos+".")};
+  return true;
+}
+function afterMove(doubles){
+  const p=current();
+  if(p.doubles>=3){p.doubles=0;return hippo(5)}
+  G.phase="action";p.freeRoll=doubles;render();
+  if(promptUnownedBando(p))return;
+  scheduleCPU();
+}
+function hippo(left){
+  if(left<=0){G.phase="action";render();return scheduleCPU()}
+  const p=current();
+  if(p.cpu)return setTimeout(()=>animateDice((a,b)=>{log(p.name+" HIPPOPOTAMUS free roll: "+a+"+"+b+".");moveNormal(p,a+b,()=>hippo(left-1))}),450);
+  openModal(`<h2>HIPPOPOTAMUS</h2><p>${left} additional free turn${left===1?"":"s"} remaining.</p><div class="actions"><button id="hRoll" class="full">Roll Free</button></div>`);
+  $("hRoll").onclick=()=>{closeModal();animateDice((a,b)=>{log(p.name+" HIPPOPOTAMUS free roll: "+a+"+"+b+".");moveNormal(p,a+b,()=>hippo(left-1))})};
+}
+function roll(free){
+  if(!G||G.finished||G.busy)return;
+  const p=current(); if(p.jail>0)return jailTurn(p);
+  if(!free){
+    if(p.coins<1)return returnHoodRich(p,"no coin available for roll fee",()=>{});
+    p.coins--;G.mail++;log(p.name+" paid 1 coin to roll.",false);
+  }
+  G.phase="rolling";
+  animateDice((a,b)=>{
+    const doubles=a===b;p.doubles=doubles?p.doubles+1:0;
+    log(p.name+" rolled "+a+" + "+b+" = "+(a+b)+(doubles?" DOUBLES":"")+".",false);if(doubles)say(p,"doubles");
+    moveNormal(p,a+b,()=>afterMove(doubles));
+  });
+}
+function advanceTurn(){
+  if(!G||G.finished)return;
+  current().freeRoll=false;
+  let loops=0;
+  do{G.active=(G.active+1)%G.players.length;if(G.active===0)G.round++;loops++;if(loops>G.players.length*2)return}while(current().waiting);
+  G.phase="roll";const p=current();render();
+  if(p.jail>0)return setTimeout(()=>jailTurn(p),350);
+  if(p.courtSkip){p.courtSkip=false;log(p.name+" missed this roll because of COURT HOUSE.");gameNotice("COURT HOUSE - ROLL MISSED",p.name+" must miss this roll.");return setTimeout(advanceTurn,1400)}
+  scheduleCPU();
+}
+function cpuAction(){
+  if(!G||G.finished||!current().cpu||G.phase!=="action")return;
+  const p=current(),n=p.pos;
+  if(BANDO.includes(n)&&!G.bandos[n]&&p.coins>=3)buyCurrent();
+  else if(INS.includes(n)&&p.coins>=2&&p.ins<2)buyCurrent();
+  else if(LEGAL.includes(n)&&p.coins>=2&&p.legal<2)buyCurrent();
+  investCurrent();render();
+  setTimeout(()=>p.freeRoll?(p.freeRoll=false,G.phase="roll",roll(true)):advanceTurn(),650);
+}
+function scheduleCPU(){
+  if(!G||G.finished||!current().cpu||G.busy)return;
+  G.busy=true;render();
+  setTimeout(()=>{G.busy=false;if(!G||G.finished||!current().cpu)return;if(G.phase==="roll")return roll(false);if(G.phase==="action")return cpuAction()},650);
+}
+
+function openLab(){
+  if(!G||!G.players.length)return;
+  const p=current();
+  openModal(`<h2>PLAYTEST LAB</h2><p>Testing only. These tools bypass normal movement.</p><div class="actions">
+    <button id="labWealthy">WEALTHY</button><button id="labJail">GO TO JAIL</button>
+    <button id="labCourt">COURT HOUSE</button><button id="labBando">Unowned BANDO</button>
+    <button id="labDebt">BANDO Debt</button><button id="labZero">Out of Coins</button>
+    <button id="labReset" class="full secondary">Reset Player to HOOD RICH</button><button id="labClose" class="full secondary">Close</button></div>`);
+  $("labWealthy").onclick=()=>{closeModal();p.pos=98;log("PLAYTEST LAB: moved "+p.name+" to WEALTHY.");resolveLanding(p,98,()=>afterMove(false),true)};
+  $("labJail").onclick=()=>{closeModal();p.pos=GOJAIL[0];log("PLAYTEST LAB: moved "+p.name+" to GO TO JAIL.");goToJail(p,()=>afterMove(false))};
+  $("labCourt").onclick=()=>{closeModal();p.pos=COURT[0];log("PLAYTEST LAB: moved "+p.name+" to COURT HOUSE.");courtHouse(p,()=>afterMove(false))};
+  $("labBando").onclick=()=>{closeModal();const t=BANDO.find(n=>!G.bandos[n]);if(t==null)return gameNotice("PLAYTEST LAB","Every BANDO is owned.");p.pos=t;G.phase="action";log("PLAYTEST LAB: moved "+p.name+" to unowned BANDO #"+t+".");render();promptUnownedBando(p)};
+  $("labDebt").onclick=()=>{closeModal();const owner=(G.active+1)%G.players.length,t=BANDO[0];G.bandos[t]={owner,invest:5};p.pos=t;log("PLAYTEST LAB: moved "+p.name+" to "+G.players[owner].name+"'s +5 BANDO.");bandoDebt(p,t,()=>afterMove(false))};
+  $("labZero").onclick=()=>{closeModal();p.coins=0;returnHoodRich(p,"PLAYTEST LAB zero-coin scenario")};
+  $("labReset").onclick=()=>{closeModal();p.pos=0;p.jail=0;p.courtSkip=false;p.waiting=false;p.freeRoll=false;G.phase="roll";log("PLAYTEST LAB: reset "+p.name+" to HOOD RICH.")};
+  $("labClose").onclick=closeModal;
+}
+
+function bind(){
+  $("rollBtn").onclick=()=>{if(!G||!G.players.length||current().cpu)return;if(current().freeRoll){current().freeRoll=false;G.phase="roll";roll(true)}else roll(false)};
+  $("buyBtn").onclick=()=>{if(G&&G.players.length&&!current().cpu)buyCurrent()};
+  $("investBtn").onclick=()=>{if(G&&G.players.length&&!current().cpu)investCurrent()};
+  $("endBtn").onclick=()=>{if(G&&G.players.length&&!current().cpu)advanceTurn()};
+  $("statsBtn").onclick=()=>{$("drawer").classList.add("open");drawStats()};
+  $("closeDrawer").onclick=()=>$("drawer").classList.remove("open");
+  $("newGameBtn").onclick=()=>{$("drawer").classList.remove("open");newGame()};
+  $("labBtn").onclick=()=>{$("drawer").classList.remove("open");openLab()};
+  $("soundTestBtn").onclick=soundConfirmation;
+  $("soundToggle").addEventListener("change",()=>{if(soundOn())soundConfirmation()});
+  document.addEventListener("pointerdown",()=>{if(soundOn())ensureAudio()},{once:true});
+  document.addEventListener("touchstart",()=>{if(soundOn())ensureAudio()},{once:true,passive:true});
+}
+
+function boot(){
+  try{bind();renderDie($("die1"),1);renderDie($("die2"),1);render();newGame()}
+  catch(err){
+    console.error(err);
+    $("turnLine").textContent="Startup error";
+    openModal(`<h2>STARTUP ERROR</h2><p>${escapeHtml(err.message||String(err))}</p><div class="actions"><button id="retry" class="full">Retry</button></div>`);
+    setTimeout(()=>{if($("retry"))$("retry").onclick=()=>location.reload()},0);
+  }
+}
+
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot();
+</script>
+</body>
+</html>
